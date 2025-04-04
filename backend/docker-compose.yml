@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  # Backend service (NestJS)
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/usr/src/app       # This mounts the current directory to /usr/src/app
+      - /usr/src/app/node_modules  # This prevents overwriting node_modules
+    environment:
+      - NODE_ENV=development
+      - MONGODB_URI=mongodb://mongodb:27017/licitalab
+      - JWT_SECRET=your_secret_key_for_development
+      - JWT_EXPIRES_IN=1d
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - mongodb
+      - redis
+    restart: unless-stopped
+
+  # MongoDB database
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+      - C:/Users/kevin/OneDrive/Documentos/The Opportunity/mongo/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+    restart: unless-stopped
+
+  # Redis for caching
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+
+volumes:
+  mongodb_data:
+  redis_data:
