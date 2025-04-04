@@ -52,6 +52,12 @@ export const opportunityService = {
     return response.data;
   },
 
+  // Obtener oportunidad por ID
+  async getOpportunityById(id: string): Promise<Opportunity> {
+    const response = await api.get(`/opportunities/${id}`);
+    return response.data;
+  },
+
   // Alternar el seguimiento de una oportunidad
   async toggleFollowOpportunity(id: string): Promise<{ followed: boolean }> {
     const response = await api.patch(`/opportunities/${id}/follow`);
@@ -64,12 +70,6 @@ export const opportunityService = {
       username,
       password,
     });
-    return response.data;
-  },
-
-  // Obtener oportunidad por ID
-  async getOpportunityById(id: string): Promise<Opportunity> {
-    const response = await api.get(`/opportunities/${id}`);
     return response.data;
   },
 };
