@@ -1,4 +1,6 @@
+// src/types/Opportunity.ts
 export interface Opportunity {
+  _id: string;
   code: string;
   title: string;
   type: "tender" | "agile";
@@ -10,10 +12,11 @@ export interface Opportunity {
   requirements?: string[];
   status?: string;
   categories?: string[];
+  attachments?: { name: string; url: string }[];
 }
 
 export interface OpportunityFilters {
-  type?: "tender" | "agile";
+  type?: string;
   startDate?: string;
   endDate?: string;
   onlyActive?: boolean;
