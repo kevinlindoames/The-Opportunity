@@ -30,7 +30,9 @@ services:
       - "27017:27017"
     volumes:
       - mongodb_data:/data/db
-      - C:/Users/kevin/OneDrive/Documentos/The Opportunity/mongo/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - ./mongodb/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+
+
     restart: unless-stopped
 
   # Redis for caching
