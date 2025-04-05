@@ -9,7 +9,6 @@ export class OpportunitiesService {
   ) {}
 
   async findAll(filters: FindOpportunitiesDto) {
-    // By default, only active opportunities
     const defaultFilters = { onlyActive: true, ...filters };
     return this.opportunitiesRepository.findAll(defaultFilters);
   }

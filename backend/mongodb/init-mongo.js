@@ -1,4 +1,3 @@
-// Este script se ejecuta cuando MongoDB arranca por primera vez
 db = db.getSiblingDB('licitalab');
 
 // Crear colecciones

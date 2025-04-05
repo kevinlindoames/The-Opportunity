@@ -29,7 +29,6 @@ export class AuthService {
   async login(user: any) {
     const payload = { username: user.username, sub: user._id, role: user.role };
 
-    // Update last login timestamp
     await this.usersService.updateLastLogin(user._id);
 
     return {

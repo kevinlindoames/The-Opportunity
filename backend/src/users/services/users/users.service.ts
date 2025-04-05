@@ -28,7 +28,6 @@ export class UsersService {
   }
 
   async create(createUserDto: CreateUserDto): Promise<UserDocument> {
-    // Check if username already exists
     const existingUsername = await this.usersRepository.findByUsername(
       createUserDto.username,
     );
@@ -36,7 +35,6 @@ export class UsersService {
       throw new ConflictException('Username already exists');
     }
 
-    // Check if email already exists
     const existingEmail = await this.usersRepository.findByEmail(
       createUserDto.email,
     );

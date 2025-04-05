@@ -14,7 +14,7 @@ export class UsersController {
   @ApiOperation({ summary: 'Get current user profile' })
   async getProfile(@Request() req) {
     const user = await this.usersService.findById(req.user.userId);
-    // Exclude sensitive information
+
     const { password, ...result } = user.toObject();
     return result;
   }

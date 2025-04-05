@@ -1,5 +1,3 @@
-// src/opportunities/repositories/opportunities/opportunities.repository.ts
-
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -21,16 +19,13 @@ export class OpportunitiesRepository {
     private userFollowingModel: Model<UserFollowingDocument>,
   ) {}
 
-  // Method to find all opportunities with filters
   async findAll(filters: any = {}) {
     const query: any = {};
 
-    // Filter by type if specified
     if (filters.type) {
       query.type = filters.type;
     }
 
-    // Filter by publication date range
     if (filters.startDate || filters.endDate) {
       query.publish_date = {};
       if (filters.startDate) {
@@ -41,8 +36,6 @@ export class OpportunitiesRepository {
       }
     }
 
-    // Por defecto, filtrar solo oportunidades activas
-    // Solo mostrar oportunidades inactivas si onlyActive es explícitamente 'false'
     if (filters.onlyActive !== 'false' && filters.onlyActive !== false) {
       query.close_date = { $gt: new Date() };
     }
@@ -50,9 +43,7 @@ export class OpportunitiesRepository {
     return this.opportunityModel.find(query).sort({ publish_date: -1 }).exec();
   }
 
-  // Method to find followed opportunities for a user
   async findFollowed(userId: string, filters: any = {}) {
-    // Find IDs of opportunities followed by the user
     const followings = await this.userFollowingModel
       .find({ userId })
       .select('opportunityId')
@@ -60,12 +51,10 @@ export class OpportunitiesRepository {
 
     const opportunityIds = followings.map((f) => f.opportunityId);
 
-    // Build base query
     const query: any = {
       _id: { $in: opportunityIds },
     };
 
-    // Apply additional filters as in findAll
     if (filters.type) {
       query.type = filters.type;
     }
@@ -80,7 +69,6 @@ export class OpportunitiesRepository {
       }
     }
 
-    // Por defecto, filtrar solo oportunidades activas
     if (filters.onlyActive !== 'false' && filters.onlyActive !== false) {
       query.close_date = { $gt: new Date() };
     }
@@ -88,7 +76,6 @@ export class OpportunitiesRepository {
     return this.opportunityModel.find(query).sort({ publish_date: -1 }).exec();
   }
 
-  // Method to toggle follow status for an opportunity
   async toggleFollow(userId: string, opportunityId: string) {
     const existing = await this.userFollowingModel
       .findOne({
@@ -98,11 +85,9 @@ export class OpportunitiesRepository {
       .exec();
 
     if (existing) {
-      // If it exists, remove the follow
       await this.userFollowingModel.deleteOne({ _id: existing._id }).exec();
       return { followed: false };
     } else {
-      // If it doesn't exist, create a new follow
       const newFollowing = new this.userFollowingModel({
         userId,
         opportunityId,

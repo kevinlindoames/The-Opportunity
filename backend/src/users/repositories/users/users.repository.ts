@@ -22,11 +22,9 @@ export class UsersRepository {
   }
 
   async create(createUserDto: CreateUserDto): Promise<UserDocument> {
-    // Hash the password
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(createUserDto.password, salt);
 
-    // Create new user with hashed password
     const newUser = new this.userModel({
       ...createUserDto,
       password: hashedPassword,

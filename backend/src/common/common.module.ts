@@ -4,7 +4,7 @@ import { HttpExceptionFilter } from './filters/http-exception.filter/http-except
 import { RolesGuard } from './guards/roles.guard/roles.guard';
 import { CacheService } from './services/cache/cache.service';
 
-@Global() // Hace que el módulo esté disponible en toda la aplicación
+@Global()
 @Module({
   providers: [
     CacheService,
