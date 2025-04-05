@@ -33,10 +33,8 @@ const OpportunityTable = ({
     (state: RootState) => state.opportunities
   );
 
-  // Determinar qué oportunidades mostrar según el modo
   const opportunities = showOnlyFollowed ? followedItems : items;
 
-  // Cargar datos al montar el componente o cuando cambian los filtros
   useEffect(() => {
     if (showOnlyFollowed) {
       dispatch(fetchFollowedOpportunities(filters));
@@ -45,7 +43,6 @@ const OpportunityTable = ({
     }
   }, [dispatch, filters, showOnlyFollowed]);
 
-  // Manejar el toggle de seguimiento
   const handleToggleFollow = (id: string, currentStatus: boolean) => {
     dispatch(toggleFollow(id))
       .unwrap()
@@ -63,7 +60,6 @@ const OpportunityTable = ({
       });
   };
 
-  // Formatear fecha para mostrar
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("es-ES", {

@@ -1,4 +1,3 @@
-// src/components/auth/LoginForm.tsx
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -34,7 +33,7 @@ export default function LoginForm() {
     setIsLoading(true);
     try {
       const response = await opportunityService.login(username, password);
-      // Guardar el token en localStorage
+
       localStorage.setItem("token", response.access_token);
       localStorage.setItem("user", JSON.stringify(response.user));
 
@@ -42,7 +41,6 @@ export default function LoginForm() {
         description: "Bienvenido a LicitaLAB",
       });
 
-      // Redirigir a la página de oportunidades
       router.push("/opportunities");
     } catch (error) {
       toast.error("Error de autenticación", {

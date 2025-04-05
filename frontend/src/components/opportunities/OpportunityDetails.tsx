@@ -1,4 +1,3 @@
-// src/components/opportunities/OpportunityDetails.tsx
 "use client";
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
@@ -26,7 +25,6 @@ export default function OpportunityDetails() {
   useEffect(() => {
     const fetchOpportunity = async () => {
       try {
-        // Necesitarás agregar este método a tu servicio
         const data = await opportunityService.getOpportunityById(id);
         setOpportunity(data);
       } catch (error) {

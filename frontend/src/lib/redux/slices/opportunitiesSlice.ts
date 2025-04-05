@@ -65,7 +65,7 @@ const opportunitiesSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // Fetch all opportunities
+
       .addCase(fetchOpportunities.pending, (state) => {
         state.status = "loading";
       })
@@ -77,7 +77,7 @@ const opportunitiesSlice = createSlice({
         state.status = "failed";
         state.error = action.payload as string;
       })
-      // Fetch followed opportunities
+
       .addCase(fetchFollowedOpportunities.pending, (state) => {
         state.status = "loading";
       })
@@ -89,16 +89,15 @@ const opportunitiesSlice = createSlice({
         state.status = "failed";
         state.error = action.payload as string;
       })
-      // Toggle follow status
+
       .addCase(toggleFollow.fulfilled, (state, action) => {
         const { id, followed } = action.payload;
-        // Update in regular items
+
         const itemIndex = state.items.findIndex((item) => item._id === id);
         if (itemIndex !== -1) {
           state.items[itemIndex].is_followed = followed;
         }
 
-        // Add/remove from followed items
         if (followed) {
           const item = state.items.find((item) => item._id === id);
           if (item && !state.followedItems.some((f) => f._id === id)) {

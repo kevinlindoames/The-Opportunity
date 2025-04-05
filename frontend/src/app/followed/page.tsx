@@ -1,4 +1,3 @@
-// src/app/followed/page.tsx
 "use client";
 import OpportunityFilters from "../../components/opportunities/OpportunityFilters";
 import OpportunityTable from "../../components/opportunities/OpportunityTable";

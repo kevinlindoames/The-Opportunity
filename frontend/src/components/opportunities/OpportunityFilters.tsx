@@ -1,4 +1,3 @@
-// src/components/opportunities/OpportunityFilters.tsx
 "use client";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -30,7 +29,6 @@ const OpportunityFilters = () => {
   const [startDate, setStartDate] = useState<Date | undefined>();
   const [endDate, setEndDate] = useState<Date | undefined>();
 
-  // Inicializar fechas desde los filtros si existen
   useEffect(() => {
     if (filters.startDate) {
       setStartDate(new Date(filters.startDate));
@@ -71,7 +69,6 @@ const OpportunityFilters = () => {
 
   const handleShowInactiveChange = (checked: boolean) => {
     if (checked) {
-      // Si está marcado, queremos mostrar oportunidades inactivas
       dispatch(
         setFilters({
           ...filters,
@@ -79,7 +76,6 @@ const OpportunityFilters = () => {
         })
       );
     } else {
-      // Si no está marcado, quitamos el filtro para usar el comportamiento predeterminado del backend
       const { onlyActive, ...restFilters } = filters;
       dispatch(setFilters(restFilters));
     }
