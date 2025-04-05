@@ -28,6 +28,8 @@ export class OpportunitiesController {
   @UseInterceptors(CacheInterceptor)
   @ApiOperation({ summary: 'Get all opportunities with filters' })
   async findAll(@Query() filters: FindOpportunitiesDto) {
+    console.log('Filtros recibidos:', filters);
+
     return this.opportunitiesService.findAll(filters);
   }
 

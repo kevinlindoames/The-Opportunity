@@ -1,4 +1,3 @@
-// src/lib/redux/slices/opportunitiesSlice.ts
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { Opportunity, OpportunityFilters } from "../../../types/Opportunity";
 import opportunityService from "../../../services/opportunityService";
@@ -16,9 +15,7 @@ const initialState: OpportunitiesState = {
   followedItems: [],
   status: "idle",
   error: null,
-  filters: {
-    onlyActive: true,
-  },
+  filters: {},
 };
 
 export const fetchOpportunities = createAsyncThunk(
@@ -63,7 +60,7 @@ const opportunitiesSlice = createSlice({
       state.filters = action.payload;
     },
     resetFilters: (state) => {
-      state.filters = { onlyActive: true };
+      state.filters = {};
     },
   },
   extraReducers: (builder) => {
@@ -117,4 +114,5 @@ const opportunitiesSlice = createSlice({
 });
 
 export const { setFilters, resetFilters } = opportunitiesSlice.actions;
+
 export default opportunitiesSlice.reducer;

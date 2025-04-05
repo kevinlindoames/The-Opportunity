@@ -3,13 +3,16 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../lib/redux/store";
-import { setFilters } from "../../lib/redux/slices/opportunitiesSlice";
+import {
+  setFilters,
+  resetFilters,
+} from "../../lib/redux/slices/opportunitiesSlice";
 import { OpportunityFilters as FilterTypes } from "../../types/Opportunity";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select,
   SelectContent,
@@ -17,18 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
-import { CalendarIcon } from "lucide-react";
-import { format } from "date-fns";
-import { cn } from "@/lib/utils";
-
-// Necesitarás instalar date-fns:
-// npm install date-fns
+import { DatePickerSimple } from "@/components/ui/date-picker-simple";
 
 const OpportunityFilters = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -49,7 +41,12 @@ const OpportunityFilters = () => {
   }, []);
 
   const handleTypeChange = (value: string) => {
-    dispatch(setFilters({ ...filters, type: value || undefined }));
+    if (value === "all") {
+      const { type, ...restFilters } = filters;
+      dispatch(setFilters(restFilters));
+    } else {
+      dispatch(setFilters({ ...filters, type: value }));
+    }
   };
 
   const handleStartDateChange = (date: Date | undefined) => {
@@ -72,10 +69,26 @@ const OpportunityFilters = () => {
     }
   };
 
-  const resetFilters = () => {
+  const handleShowInactiveChange = (checked: boolean) => {
+    if (checked) {
+      // Si está marcado, queremos mostrar oportunidades inactivas
+      dispatch(
+        setFilters({
+          ...filters,
+          onlyActive: false,
+        })
+      );
+    } else {
+      // Si no está marcado, quitamos el filtro para usar el comportamiento predeterminado del backend
+      const { onlyActive, ...restFilters } = filters;
+      dispatch(setFilters(restFilters));
+    }
+  };
+
+  const handleResetFilters = () => {
     setStartDate(undefined);
     setEndDate(undefined);
-    dispatch(setFilters({ onlyActive: true }));
+    dispatch(resetFilters());
   };
 
   return (
@@ -87,12 +100,15 @@ const OpportunityFilters = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           <div className="space-y-2">
             <Label htmlFor="type">Tipo</Label>
-            <Select value={filters.type || ""} onValueChange={handleTypeChange}>
+            <Select
+              value={filters.type || "all"}
+              onValueChange={handleTypeChange}
+            >
               <SelectTrigger id="type">
                 <SelectValue placeholder="Todos los tipos" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Todos</SelectItem>
+                <SelectItem value="all">Todos</SelectItem>
                 <SelectItem value="tender">Licitación</SelectItem>
                 <SelectItem value="agile">Compra Ágil</SelectItem>
               </SelectContent>
@@ -101,60 +117,34 @@ const OpportunityFilters = () => {
 
           <div className="space-y-2">
             <Label htmlFor="startDate">Fecha desde</Label>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  id="startDate"
-                  variant="outline"
-                  className={cn(
-                    "w-full justify-start text-left font-normal",
-                    !startDate && "text-muted-foreground"
-                  )}
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {startDate ? format(startDate, "PPP") : "Seleccionar fecha"}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0">
-                <Calendar
-                  mode="single"
-                  selected={startDate}
-                  onSelect={handleStartDateChange}
-                  initialFocus
-                />
-              </PopoverContent>
-            </Popover>
+            <DatePickerSimple
+              date={startDate}
+              onSelect={handleStartDateChange}
+            />
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="endDate">Fecha hasta</Label>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  id="endDate"
-                  variant="outline"
-                  className={cn(
-                    "w-full justify-start text-left font-normal",
-                    !endDate && "text-muted-foreground"
-                  )}
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {endDate ? format(endDate, "PPP") : "Seleccionar fecha"}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0">
-                <Calendar
-                  mode="single"
-                  selected={endDate}
-                  onSelect={handleEndDateChange}
-                  initialFocus
-                />
-              </PopoverContent>
-            </Popover>
+            <DatePickerSimple date={endDate} onSelect={handleEndDateChange} />
           </div>
 
-          <div className="flex items-end">
-            <Button variant="outline" onClick={resetFilters} className="w-full">
+          <div className="space-y-4">
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="showInactive"
+                checked={filters.onlyActive === false}
+                onCheckedChange={handleShowInactiveChange}
+              />
+              <Label htmlFor="showInactive" className="text-sm font-medium">
+                Mostrar oportunidades cerradas
+              </Label>
+            </div>
+
+            <Button
+              variant="outline"
+              onClick={handleResetFilters}
+              className="w-full"
+            >
               Limpiar filtros
             </Button>
           </div>

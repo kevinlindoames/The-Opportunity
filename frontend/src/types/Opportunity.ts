@@ -1,4 +1,3 @@
-// src/types/Opportunity.ts
 export interface Opportunity {
   _id: string;
   code: string;
@@ -13,6 +12,8 @@ export interface Opportunity {
   status?: string;
   categories?: string[];
   attachments?: { name: string; url: string }[];
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface OpportunityFilters {

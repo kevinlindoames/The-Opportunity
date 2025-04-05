@@ -1,6 +1,5 @@
-// src/components/opportunities/OpportunityTable.tsx
 "use client";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../lib/redux/store";
 import {
@@ -51,7 +50,6 @@ const OpportunityTable = ({
     dispatch(toggleFollow(id))
       .unwrap()
       .then(() => {
-        // Usar Sonner para mostrar el toast
         toast(currentStatus ? "Oportunidad removida" : "Oportunidad seguida", {
           description: currentStatus
             ? "La oportunidad ha sido removida de tu seguimiento"

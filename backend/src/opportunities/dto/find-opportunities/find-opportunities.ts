@@ -1,4 +1,6 @@
+// src/opportunities/dto/find-opportunities/find-opportunities.ts
 import { IsOptional, IsEnum, IsDateString, IsBoolean } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class FindOpportunitiesDto {
   @IsOptional()
@@ -14,6 +16,7 @@ export class FindOpportunitiesDto {
   endDate?: string;
 
   @IsOptional()
+  @Type(() => Boolean) // Convierte automáticamente a boolean
   @IsBoolean()
-  onlyActive?: boolean = true;
+  onlyActive?: boolean;
 }

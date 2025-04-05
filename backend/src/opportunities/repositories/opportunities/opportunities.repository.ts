@@ -1,3 +1,5 @@
+// src/opportunities/repositories/opportunities/opportunities.repository.ts
+
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -39,8 +41,9 @@ export class OpportunitiesRepository {
       }
     }
 
-    // Only active opportunities (closing date greater than current date)
-    if (filters.onlyActive) {
+    // Por defecto, filtrar solo oportunidades activas
+    // Solo mostrar oportunidades inactivas si onlyActive es explícitamente 'false'
+    if (filters.onlyActive !== 'false' && filters.onlyActive !== false) {
       query.close_date = { $gt: new Date() };
     }
 
@@ -77,7 +80,8 @@ export class OpportunitiesRepository {
       }
     }
 
-    if (filters.onlyActive) {
+    // Por defecto, filtrar solo oportunidades activas
+    if (filters.onlyActive !== 'false' && filters.onlyActive !== false) {
       query.close_date = { $gt: new Date() };
     }
 
