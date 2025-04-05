@@ -10,12 +10,10 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  // En validateUser de auth.service.ts
   async validateUser(username: string, password: string): Promise<any> {
     try {
       const user = await this.usersService.findByUsername(username);
 
-      // Cambiar a comparación directa
       const isPasswordValid = password === user.password;
 
       if (isPasswordValid) {
