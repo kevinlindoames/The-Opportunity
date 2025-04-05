@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { Providers } from "./providers";
 import { Toaster } from "sonner";
 import Link from "next/link";
+
 import "./globals.css";
+import { LogoutButton } from "@/components/auth/LogoutButton";
 
 export const metadata: Metadata = {
   title: "LicitaLAB - Gestión de Oportunidades",
@@ -48,6 +50,11 @@ export default function RootLayout({
                     </Link>
                   </nav>
                 </div>
+
+                {/* Botón de logout */}
+                <div className="flex items-center">
+                  <LogoutButton />
+                </div>
               </div>
             </div>
           </header>
@@ -65,7 +72,7 @@ export default function RootLayout({
             </div>
           </footer>
 
-          <Toaster position="top-right" />
+          <Toaster />
         </Providers>
       </body>
     </html>

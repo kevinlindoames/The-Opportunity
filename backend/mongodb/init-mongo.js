@@ -378,7 +378,7 @@ db.companies.insertMany([
 db.users.insertOne({
   username: 'admin',
   email: 'admin@licitalab.cl',
-  password: '$2b$10$X/tE9.EPuP.jA2iRYQ8Lx.VKl8E2SQ40ZnTnaaPSQOTJl9x2FyRkS', // "admin123" encriptado
+  password: 'admin123', // "admin123" encriptado
   role: 'admin',
   fullName: 'Administrador',
   company: 'LicitaLAB',

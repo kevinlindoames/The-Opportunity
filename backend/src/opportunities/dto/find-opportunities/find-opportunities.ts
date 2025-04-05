@@ -1,4 +1,10 @@
-import { IsOptional, IsEnum, IsDateString, IsBoolean } from 'class-validator';
+import {
+  IsOptional,
+  IsEnum,
+  IsDateString,
+  IsBoolean,
+  IsString,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class FindOpportunitiesDto {
@@ -15,7 +21,6 @@ export class FindOpportunitiesDto {
   endDate?: string;
 
   @IsOptional()
-  @Type(() => Boolean)
-  @IsBoolean()
-  onlyActive?: boolean;
+  @IsString()
+  showAll?: string;
 }

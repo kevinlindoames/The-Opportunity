@@ -1,3 +1,4 @@
+// src/components/auth/LoginForm.tsx
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -13,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import opportunityService from "@/services/opportunityService";
+import authService from "@/services/authService";
 
 export default function LoginForm() {
   const [username, setUsername] = useState("");
@@ -23,6 +24,7 @@ export default function LoginForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (!username || !password) {
       toast.error("Error", {
         description: "Por favor complete todos los campos",
@@ -31,16 +33,15 @@ export default function LoginForm() {
     }
 
     setIsLoading(true);
-    try {
-      const response = await opportunityService.login(username, password);
 
-      localStorage.setItem("token", response.access_token);
-      localStorage.setItem("user", JSON.stringify(response.user));
+    try {
+      await authService.login(username, password);
 
       toast.success("Inicio de sesión exitoso", {
         description: "Bienvenido a LicitaLAB",
       });
 
+      // Redirigir a la página de oportunidades
       router.push("/opportunities");
     } catch (error) {
       toast.error("Error de autenticación", {

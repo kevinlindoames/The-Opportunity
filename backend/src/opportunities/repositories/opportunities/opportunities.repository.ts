@@ -22,10 +22,12 @@ export class OpportunitiesRepository {
   async findAll(filters: any = {}) {
     const query: any = {};
 
+    // Filter by type if specified
     if (filters.type) {
       query.type = filters.type;
     }
 
+    // Filter by publication date range
     if (filters.startDate || filters.endDate) {
       query.publish_date = {};
       if (filters.startDate) {
@@ -36,7 +38,9 @@ export class OpportunitiesRepository {
       }
     }
 
-    if (filters.onlyActive !== 'false' && filters.onlyActive !== false) {
+    // Only active opportunities (closing date greater than current date)
+    // Solo aplicar el filtro si showAll no está presente o no es 'true'
+    if (filters.showAll !== 'true') {
       query.close_date = { $gt: new Date() };
     }
 
@@ -44,6 +48,7 @@ export class OpportunitiesRepository {
   }
 
   async findFollowed(userId: string, filters: any = {}) {
+    // Find IDs of opportunities followed by the user
     const followings = await this.userFollowingModel
       .find({ userId })
       .select('opportunityId')
@@ -51,10 +56,12 @@ export class OpportunitiesRepository {
 
     const opportunityIds = followings.map((f) => f.opportunityId);
 
+    // Build base query
     const query: any = {
       _id: { $in: opportunityIds },
     };
 
+    // Apply additional filters as in findAll
     if (filters.type) {
       query.type = filters.type;
     }
@@ -69,7 +76,9 @@ export class OpportunitiesRepository {
       }
     }
 
-    if (filters.onlyActive !== 'false' && filters.onlyActive !== false) {
+    // Only active opportunities (closing date greater than current date)
+    // Solo aplicar el filtro si showAll no está presente o no es 'true'
+    if (filters.showAll !== 'true') {
       query.close_date = { $gt: new Date() };
     }
 

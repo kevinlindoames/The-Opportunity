@@ -10,10 +10,13 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
+  // En validateUser de auth.service.ts
   async validateUser(username: string, password: string): Promise<any> {
     try {
       const user = await this.usersService.findByUsername(username);
-      const isPasswordValid = await bcrypt.compare(password, user.password);
+
+      // Cambiar a comparación directa
+      const isPasswordValid = password === user.password;
 
       if (isPasswordValid) {
         const { password, ...result } = user.toObject();
@@ -25,7 +28,6 @@ export class AuthService {
       return null;
     }
   }
-
   async login(user: any) {
     const payload = { username: user.username, sub: user._id, role: user.role };
 
